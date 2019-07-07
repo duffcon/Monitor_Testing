@@ -103,5 +103,5 @@ LabelWriter-450
 
 print pdf file
 ```
-lpr -P LabelWriter-450 output.pdf
+lpr -P LabelWriter-450 file_name.pdf
 ```
