@@ -234,8 +234,8 @@ def saveDiscountData():
         
 
 def printLabel():
-    # sendCommand(['lpr', '-P', printer_name, output_path + "label.pdf"])
-    # sendCommand(['lpr', '-P', printer_name, output_path + "barcode.pdf"])
+    sendCommand(['lpr', '-P', printer_name, output_path + "label.pdf"])
+    sendCommand(['lpr', '-P', printer_name, output_path + "barcode.pdf"])
 
     discount = False
     for key in discount_keys:
