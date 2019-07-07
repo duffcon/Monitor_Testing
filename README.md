@@ -78,10 +78,18 @@ convert xml to pdf
 glabels-3-batch labels.glabels
 ```
 
-view pdf, default name output.pdf
+change file name default output.pdf
+
 ```
-atril output.pdf
+glabels-3-batch -o file_name.pdf labels.glabels
 ```
+
+view pdf
+```
+atril file_name.pdf
+```
+
+![](2019-07-07-12-01-28.png)
 
 get printer name
 ```
