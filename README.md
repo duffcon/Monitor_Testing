@@ -18,6 +18,7 @@ monitor:
 
 
 get info about monitor
+
 resolution, model number, size, ect...
 
 ```
