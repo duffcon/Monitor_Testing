@@ -59,9 +59,6 @@ discount_data = dict()
 monitor_data = list()
 
 
-def getPrice():
-    return 39
-
 def sendCommand(c):
     p = Popen(c, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate(b"")
@@ -107,9 +104,7 @@ def extraHwParse(m):
     m["Type"] = type_keys[0]
     m["Ports"] = ""
     m["Size"] = getDiagonal(m["Length"], m["Width"])
-    # price = getPrice(info_data["Size"].get(), info_data["Length"].get(), info_data["Width"].get(), info_data["Type"].get())
-    price = getPrice()
-    m["Price"] = str(price) + ".95"
+    m["Price"] = ".95"
     m["Date"] = getDate()
 
 def hwInfoParse(info_string, m):
@@ -164,6 +159,18 @@ def saveMonitor():
         f.write(key + "," + info_data[key].get() + "\n")
     f.close()
 
+    s = info_data["Date"].get() + ","
+    s += getSku(info_data["Size"].get(), info_data["Length"].get(), info_data["Width"].get(), info_data["Type"].get()) + ","
+    s += info_data["Vendor"].get() + ","
+    s += info_data["Model"].get() + ","
+    s += info_data["Year"].get() + ","
+    s += info_data["Price"].get() + "\r\n"
+
+    path = monitor_path + "all_monitors.csv"
+    f = open(path, "a+")
+    f.write(s)
+    f.close()
+
 def saveLabelData():
     path = label_path + "label_input.txt"
     f_out = output_path + "label.pdf"
@@ -178,16 +185,22 @@ def saveLabelData():
 
     sendCommand(['glabels-3-batch', '-i', path, '-o', f_out, label_layout])
 
+
+def getSku(s, l, w, t):
+    if l == "" or w == "":
+        return ""
+    ratio = int(l) / int(w)
+    if ratio < 1.4:
+        shape = 'S'
+    else:
+        shape='W'
+    return str(s) + str(t) + shape
+
 def saveBarcodeData():
     path = label_layout + "barcode_input.txt"
     f_out = output_path + "barcode.pdf"
     f = open(path, "w+")
-    ratio = int(info_data["Length"].get()) / int(info_data["Width"].get())
-    if ratio < 1.4:
-        shape = 'S'
-    else:
-        shape = 'W'
-    s =  info_data["Size"].get() + info_data["Type"].get() + shape + ";"
+    s = getSku(info_data["Size"].get(), info_data["Length"].get(), info_data["Width"].get(), info_data["Type"].get())
     s = s.upper()
     f.write(s)
 

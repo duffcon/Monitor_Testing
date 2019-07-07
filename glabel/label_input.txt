@@ -1,2 +1,2 @@
 VNDR;Model;Serial;Year;HorizontalRes;VerticalRes;RefreshRate;Length;Width;Vendor;Size;Ports;Date;Type;Price;
-HWP;2211;CNK1131XQX;2011;1920;1080;60;480;270;HP;22;DVI VGA ;7 Jul 2019;LED;39.95;
+LEN;T2254pC;VN-A04P78;2015;1680;1050;60;474;296;Lenovo;22;DP HDMI VGA ;7 Jul 2019;LED;39.95;
