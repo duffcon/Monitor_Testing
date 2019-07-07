@@ -1,0 +1,2 @@
+OldPrice;NewPrice;Description
+39.95;29.95;Scratch 

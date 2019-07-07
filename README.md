@@ -5,4 +5,6 @@
 * Dymo LabelWriter 450
 
 
-
+```
+python3  main.py
+```

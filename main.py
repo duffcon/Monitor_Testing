@@ -14,9 +14,13 @@ font = ("Courier", 10)
 width = 15
 sticky = W
 
-label_layout = "./layouts/layout.glabels"
-barcode_layout = "./layouts/barcode.glabels"
-discount_layout = "./layouts/discount.glabels"
+output_path = "./pdf/"
+label_path = "./glabel/"
+monitor_path = "./monitor/"
+
+label_layout = label_path + "layout.glabels"
+barcode_layout = label_path + "barcode.glabels"
+discount_layout = label_path + "discount.glabels"
 printer_name = "LabelWriter-450"
 
 
@@ -46,6 +50,7 @@ ext_info_keys = ["Vendor", "Size", "Ports", "Date", "Type", "Price"]
 info_keys = list(hw_info_patterns.keys()) + ext_info_keys
 port_keys = ["DP", "HDMI", "DVI", "VGA", "USB", "Ethernet", "AV", "Component", "S-Video"]
 type_keys = ["LCD", "LED", "CRT", "TV"]
+discount_keys = ["No Stand", "Scratch", "Spot", "Discolored"]
 
 info_data = dict()
 port_data = dict()
@@ -81,7 +86,7 @@ def getDiagonal(l, w):
     return round(c)
 
 def getPath(m):
-    return "./database/" + m["Vendor"] + "_" + m["Model"] + ".mon"
+    return monitor_path + m["Vendor"] + "_" + m["Model"] + ".mon"
      
 def getDate():
     now = datetime.datetime.now()
@@ -145,13 +150,13 @@ def monitorChange(monitor):
     monitor = monitor.split(" ")
     for key in info_keys:
         info_data[key].set(monitor_data[int(monitor[0])][key])
+    for key in discount_keys:
+        discount_data[key].set(0)
 
     
-def addDiscount():
-    pass
 
 def saveMonitor():
-    path = "./database/" + info_data["Vendor"].get() + "_" + info_data["Model"].get() + ".mon"
+    path = monitor_path + info_data["Vendor"].get() + "_" + info_data["Model"].get() + ".mon"
     f = open(path, "w")
     for key in info_data.keys():
         if key in ["Date", "Price"]:
@@ -160,8 +165,8 @@ def saveMonitor():
     f.close()
 
 def saveLabelData():
-    path = "./layouts/label_input.txt"
-    f_out = "./labels/label.pdf"
+    path = label_path + "label_input.txt"
+    f_out = output_path + "label.pdf"
 
     f = open(path, "w+")
     for key in info_data.keys():
@@ -174,8 +179,8 @@ def saveLabelData():
     sendCommand(['glabels-3-batch', '-i', path, '-o', f_out, label_layout])
 
 def saveBarcodeData():
-    path = "./layouts/barcode_input.txt"
-    f_out = "./labels/barcode.pdf"
+    path = label_layout + "barcode_input.txt"
+    f_out = output_path + "barcode.pdf"
     f = open(path, "w+")
     ratio = int(info_data["Length"].get()) / int(info_data["Width"].get())
     if ratio < 1.4:
@@ -197,21 +202,46 @@ def saveBarcodeData():
     sendCommand(['glabels-3-batch', '-i', path, '-o', f_out, barcode_layout])
 
 
+def saveDiscountData():
+    path = "./glabel/discount_input.txt"
+    f_out = "./pdf/discount.pdf"
+    f = open(path, "w")
+    f.write("OldPrice;NewPrice;Description\n")
+
+    f.write(info_data["Price"].get() + ";")
+    f.write(discount_price.get() + ";")
+
+    discount = False
+    for key in discount_keys:
+        if discount_data[key].get() == 1:
+            f.write(key + " ")
+    f.close()
+
+    sendCommand(['glabels-3-batch', '-i', path, '-o', f_out, discount_layout])
+        
+
 def printLabel():
-    sendCommand(['lpr', '-P', printer_name, "./labels/label.pdf"])
-    sendCommand(['lpr', '-P', printer_name, "./labels/barcode.pdf"])
-    
+    # sendCommand(['lpr', '-P', printer_name, output_path + "label.pdf"])
+    # sendCommand(['lpr', '-P', printer_name, output_path + "barcode.pdf"])
+
+    discount = False
+    for key in discount_keys:
+        if discount_data[key].get() == 1:
+            discount = True
+
+    if discount == True:
+        sendCommand(['lpr', '-P', printer_name, output_path + "discount.pdf"])
+
 
 def printCurrent():
     saveLabelData()
     saveBarcodeData()
+    saveDiscountData()
     printLabel()
 
 def printSave():
     saveMonitor()
-    saveLabelData()
-    saveBarcodeData()
-    printLabel()
+    printCurrent()
 
 def getInfo():
     global monitor_data
@@ -267,6 +297,13 @@ for i in range(0, len(port_keys)):
 
 for i in range(0, len(type_keys)):
     Radiobutton(window, font = font, text = type_keys[i], variable = info_data["Type"], value = type_keys[i]).grid(row=i, column=4, sticky = W)
+
+for i in range(0, len(discount_keys)):
+    discount_data[discount_keys[i]] = IntVar()
+    Checkbutton(window, font = font, text = discount_keys[i], variable = discount_data[discount_keys[i]]).grid(row=i, column=5, sticky = W)
+
+discount_price = StringVar(value="")
+Entry(window, font = font, width = width, textvariable = discount_price).grid(row=len(discount_keys), column = 5, sticky = W)
 
 
 getInfo()
