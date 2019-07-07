@@ -1,48 +1,3 @@
-# python dictionaries
-
-
-create dictionary
-```python
-d = dict({
-    "Vendor": "Dell",
-    "Model": "2211"
-})
-```
-
-insert/update item
-```python
-d["Vendor"] = "HP"
-```
-
-get item
-```python
-print(d["Vendor"])
-```
-
-get item robust
-```python
-print(d.get("Vendors", "NULL"))
-```
-
-dictionary of regular expression patterns
-
-```python
-hw_info_patterns = dict ({
-    "Vendor": dict({ "Pattern": 'Vendor: (\w+)"*.*"*' , "Group": 1  }), 
-    "Model": dict({ "Pattern": 'Model: "(.*)"', "Group": 1  }),
-    "Serial": dict({ "Pattern": 'Serial ID: "(.*)"', "Group": 1  }),
-    "Year": dict({ "Pattern": 'Year of Manufacture: (\d+)', "Group": 1  }),
-    "HorizontalRes": dict({ "Pattern": 'Max. Resolution: (\d+)x(\d+)' , "Group": 1  }),
-    "VerticalRes": dict({ "Pattern": 'Max. Resolution: (\d+)x(\d+)' , "Group": 2  }),
-    "RefreshRate": dict({ "Pattern": '(?s:.*)Resolution: .*@(\d+)Hz' , "Group": 1  }),
-    "Length": dict({ "Pattern":'Size: (\d+)x(\d+).*', "Group": 1  }),
-    "Width": dict({ "Pattern":'Size: (\d+)x(\d+).*', "Group": 2 })
-        })
-```
-
-
-extract information from hwinfo
-```python
 from subprocess import Popen, PIPE
 import re
 import math
@@ -91,5 +46,3 @@ for key in hw_info_patterns.keys():
     monitor_data[key] = match.group(hw_info_patterns[key]["Group"])
 
 print(monitor_data)
-
-```
