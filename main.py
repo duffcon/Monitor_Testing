@@ -1,49 +1,3 @@
-# tkinter
-
-
-install
-```
-sudo apt install python3-tk
-```
-
-pack
-```python
-import tkinter
-
-window = tkinter.Tk()
-
-window.title("Title")
-
-label = tkinter.Label(window, text = "Hello World!").pack()
-
-window.mainloop()
-```
-
-![](2019-07-07-14-13-27.png)
-
-
-grid
-```python
-import tkinter
-
-window = tkinter.Tk()
-
-window.title("Title")
-
-tkinter.Label(window, text = "Hello World!").grid(row=1, column=1)
-tkinter.Label(window, text = "Hello World!").grid(row=2, column=1)
-tkinter.Label(window, text = "Hello World!").grid(row=3, column=2)
-tkinter.Label(window, text = "Hello World!").grid(row=4, column=2)
-
-window.mainloop()
-```
-![](2019-07-07-14-16-09.png)
-
-
-
-
-outline of final
-```python
 import tkinter
 from tkinter import Button, Label, Checkbutton, IntVar, StringVar, Radiobutton, Entry, W, LEFT, OptionMenu
 from tkinter.ttk import Combobox
@@ -143,6 +97,3 @@ for i in range(0, len(discount_keys)):
 getInfo()
 
 window.mainloop()
-```
-
-![](2019-07-07-14-18-06.png)
