@@ -31,7 +31,7 @@ vendor_dict = dict({"DEL": "Dell",
                     "ACI": "Asus",
                     "ACR": "Acer",
                     "GSM": "LG",
-                    "SAM":"Samsung",
+                    "SAM": "Samsung",
                     "VSC": "ViewSonic",
                     "AOC": "AOC"
                     })
