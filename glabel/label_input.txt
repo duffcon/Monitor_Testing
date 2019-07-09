@@ -1,2 +1,2 @@
 VNDR;Model;Serial;Year;HorizontalRes;VerticalRes;RefreshRate;Length;Width;Vendor;Size;Ports;Date;Type;Price;
-LEN;T2254pC;VN-A04P78;2015;1680;1050;60;474;296;Lenovo;22;DP HDMI VGA ;7 Jul 2019;LED;39.95;
+LG;24EN33;402NDUN18678;2014;1920;1080;60;521;293;LG;24;DVI VGA ;8 Jul 2019;LED;74.95;

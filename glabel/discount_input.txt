@@ -1,2 +1,2 @@
 OldPrice;NewPrice;Description
-39.95;;
+74.95;;

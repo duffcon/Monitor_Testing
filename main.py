@@ -197,10 +197,12 @@ def getSku(s, l, w, t):
     return str(s) + str(t) + shape
 
 def saveBarcodeData():
-    path = label_layout + "barcode_input.txt"
+    path = label_path + "barcode_input.txt"
     f_out = output_path + "barcode.pdf"
     f = open(path, "w+")
+    f.write("SKU;Price;Data;\n")
     s = getSku(info_data["Size"].get(), info_data["Length"].get(), info_data["Width"].get(), info_data["Type"].get())
+    s+= ";"
     s = s.upper()
     f.write(s)
 
